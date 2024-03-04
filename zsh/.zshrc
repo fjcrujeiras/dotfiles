@@ -19,7 +19,7 @@ setopt autocd extendedglob notify
 bindkey -v
 # End of lines configured by zsh-newuser-install
 # The following lines were added by compinstall
-zstyle :compinstall filename '/home/fjcrujeiras/.zshrc'
+zstyle :compinstall filename '~/.zshrc'
 
 autoload -Uz compinit
 compinit
@@ -104,7 +104,7 @@ alias lt="eza --tree --level=2 --long --icons --git"
 cx() { cd "$@" && l; }
 
 autoload -U +X bashcompinit && bashcompinit
-complete -o nospace -C /home/fjcrujeiras/.local/bin/terragrunt terragrunt
+complete -o nospace -C $HOME/.local/bin/terragrunt terragrunt
 
 
 # Thanks to Raynix
