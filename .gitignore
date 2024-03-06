@@ -1,0 +1,4 @@
+# Tmux lugins temporal folder
+tmux/.config/tmux/plugins
+# LazyVim lock file
+nvim/.config/nvim/lazy-lock.json
