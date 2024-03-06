@@ -80,15 +80,22 @@ EDITOR=nvim
 alias k="kubectl"
 compdef __start_kubectl k
 
+# GOROOT/GOPATH
+
+export GOROOT=/opt/go
+export GOPATH=${HOME}/.go
+
+export PATH=$GOROOT/bin:$GOPATH/bin:$PATH
+
 # Gcloud completion
-source ~/.config/zsh/completion/gcloud.zsh.inc
+source $HOME/.local/google-cloud-sdk/completion.zsh.inc
 
 # ASDF
 . $HOME/.asdf/asdf.sh
 #. $HOME/.asdf/completions/asdf.bash
 
 # kubectx and kubens
-export PATH=~/.kubectx:$PATH:~/.local/bin
+export PATH=$HOME/.kubectx:$HOME/.local/bin:$PATH:
 
 export USE_GKE_GCLOUD_AUTH_PLUGIN=True
 
@@ -96,7 +103,8 @@ export USE_GKE_GCLOUD_AUTH_PLUGIN=True
 eval "$(direnv hook zsh)"
 
 # ---------------------- ALIASES ---------------------- #
-alias l="eza -l --icons --git -a"
+alias l="ll"
+alias ll="eza -l --icons --git -a"
 alias lt="eza --tree --level=2 --long --icons --git"
 
 # ---------------------- CUSTOM FUNCTIONS ------------- #
