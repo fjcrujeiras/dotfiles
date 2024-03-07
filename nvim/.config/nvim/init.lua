@@ -8,6 +8,10 @@
 -- Special thanks to: kickstar.nvim and NvChad for the inspiration
 -- ]]
 
+-- disable netrw. This is required to avoid problems with nvim-tree
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
+
 -- Set <space> as leader key. I found this really usefull from NvChad
 -- see `:help mapleader`
 vim.g.mapleader = ' '
@@ -105,6 +109,9 @@ vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right win
 vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
 vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
 
+-- NvimTree mappings
+vim.keymap.set('n', '<leader>p', '<cmd>NvimTreeToggle<CR>', { desc = 'Toggle Nvim-tree ' })
+-- vim.keymap.set('n', '<leader>/', 'NvimTreeOpen', { desc = 'Open Nvim-tree ' })
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
 
@@ -746,6 +753,31 @@ require('lazy').setup {
       --    - Incremental selection: Included, see `:help nvim-treesitter-incremental-selection-mod`
       --    - Show your current context: https://github.com/nvim-treesitter/nvim-treesitter-context
       --    - Treesitter + textobjects: https://github.com/nvim-treesitter/nvim-treesitter-textobjects
+    end,
+  },
+  { -- A file explorer for Neovim
+    'nvim-tree/nvim-tree.lua',
+    version = '*',
+    lazy = false,
+    dependencies = {
+      'nvim-tree/nvim-web-devicons',
+    },
+    config = function()
+      require('nvim-tree').setup {
+        on_attach = my_on_attach,
+        sort = {
+          sorter = 'case_sensitive',
+        },
+        view = {
+          width = 30,
+        },
+        renderer = {
+          group_empty = true,
+        },
+        filters = {
+          dotfiles = true,
+        },
+      }
     end,
   },
 }
