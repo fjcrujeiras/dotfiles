@@ -130,3 +130,9 @@ function kds() {
   cat $secret_cache |yq ".data.\"$secret_key\"" |base64 -d
   rm $secret_cache
 }
+
+
+# Recieves the ID of a Podcast in Apple podcast and returns the RSS feed
+function getPodcastFeed() {
+  curl -s "https://itunes.apple.com/lookup?media=podcast&id=$1" | jq '.results|.[]|.feedUrl' | tr '"' ' '
+}
