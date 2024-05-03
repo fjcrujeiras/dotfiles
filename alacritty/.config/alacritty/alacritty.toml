@@ -1,4 +1,4 @@
-import = ["/home/fjcrujeiras/.config/alacritty/catppuccin/catppuccin-mocha.toml", "/home/fjcrujeiras/.config/alacritty/extraConfig/logging.toml"]
+import = ["~/.config/alacritty/catppuccin/catppuccin-mocha.toml", "~/.config/alacritty/extraConfig/logging.toml"]
 
 [env]
 TERM = "xterm-256color"
