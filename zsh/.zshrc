@@ -3,6 +3,19 @@
 # author: fjcrujeiras
 ##
 
+
+export XDG_CONFIG_HOME="${HOME}/.config"
+export XDG_CACHE_HOME="${HOME}/.cache"
+export XDG_DATA_HOME="${HOME}/.local/share"
+export XDG_DOWNLOAD_DIR="${HOME}/cloud/downloads"
+export XDG_DESKTOP_DIR="${HOME}/desktop"
+export XDG_TEMPLATES_DIR="${HOME}/"
+export XDG_PUBLICSHARE_DIR="${HOME}/shared/public"
+export XDG_DOCUMENTS_DIR="${HOME}/cloud/documents"
+export XDG_MUSIC_DIR="${HOME}/cloud/music"
+export XDG_PICTURES_DIR="${HOME}/cloud/pictures"
+export XDG_VIDEOS_DIR="${HOME}/cloud/videos"
+
 ## ---------------------- Powerlvel10K instant Promt config ---------------#
 # Keep these lines here
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
@@ -10,11 +23,12 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
 fi
 
 
-
-# Lines configured by zsh-newuser-install
+# History file configuration, including fuzzy finding with FZF
 HISTFILE=~/.histfile
-HISTSIZE=1000
-SAVEHIST=1000
+HISTSIZE=10000
+SAVEHIST=10000
+setopt appendhistory # Save history between zsh sessions
+
 setopt autocd extendedglob notify
 bindkey -v
 # End of lines configured by zsh-newuser-install
@@ -35,11 +49,6 @@ source "${ZINIT_HOME}/zinit.zsh"
 autoload -Uz _zinit
 (( ${+_comps} )) && _comps[zinit]=_zinit
 
-
-## --------------------- PLUGINS -----------------------------#
-# zsh-fzf-history-search
-zinit ice lucid wait'0'
-zinit light joshskidmore/zsh-fzf-history-search
 
 ## --------------------- CUSTOM PLUGINS ----------------------#
 ZSH="${HOME}/.zsh"
@@ -74,6 +83,7 @@ fpath=($ZSH/plugins/zsh-completions/src $fpath)
 # ---------------------- USER SETTINGS ---------------------- #
 # Environment variables
 EDITOR=nvim
+KUBE_EDITOR=nvim
 
 # Kubectl completion
 [[ $commands[kubectl] ]] && source <(kubectl completion zsh)
@@ -98,6 +108,12 @@ source $HOME/.local/google-cloud-sdk/completion.zsh.inc
 export PATH=$HOME/.kubectx:$HOME/.local/bin:$PATH:
 
 export USE_GKE_GCLOUD_AUTH_PLUGIN=True
+
+# Krew
+export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
+alias kubectx=kubectl-ctx
+alias kubens=kubectl-ns
+
 
 # Direnv
 eval "$(direnv hook zsh)"
@@ -129,6 +145,10 @@ function kds() {
   # print out the selected key and decode its value
   cat $secret_cache |yq ".data.\"$secret_key\"" |base64 -d
   rm $secret_cache
+}
+
+function encStr() {
+  echo "$@" | base64 -w 0
 }
 
 
