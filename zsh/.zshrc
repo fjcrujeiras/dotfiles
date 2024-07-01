@@ -67,23 +67,27 @@ source "${ZSH}/themes/powerlevel10k/powerlevel10k.zsh-theme"
 source "${ZSH}/plugins/git/git.plugin.zsh"
 
 ## Fast Syntax Highligthing ----------------------------------
-[ ! -d $ZSH/plugins/fast-syntax-highlighting/.git ] && git clone https://github.com/zdharma-zmirror/fast-syntax-highlighting.git "$ZSH"/plugins/fast-syntax-highlighting 
+[ ! -d $ZSH/plugins/fast-syntax-highlighting/.git ] && git clone https://github.com/zdharma-zmirror/fast-syntax-highlighting.git "$ZSH"/plugins/fast-syntax-highlighting
 source "${ZSH}/plugins/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh"
 
 ## ZSH Auto Suggestions --------------------------------------
-[ ! -d $ZSH/plugins/zsh-autosuggestions/.git ] && git clone https://github.com/zsh-users/zsh-autosuggestions.git "$ZSH"/plugins/zsh-autosuggestions 
+[ ! -d $ZSH/plugins/zsh-autosuggestions/.git ] && git clone https://github.com/zsh-users/zsh-autosuggestions.git "$ZSH"/plugins/zsh-autosuggestions
 source "${ZSH}/plugins/zsh-autosuggestions/zsh-autosuggestions.plugin.zsh"
 
 ## ZSH Completions -------------------------------------------
-[ ! -d $ZSH/plugins/zsh-completions/.git ] && git clone https://github.com/zsh-users/zsh-completions.git "$ZSH"/plugins/zsh-completions 
+[ ! -d $ZSH/plugins/zsh-completions/.git ] && git clone https://github.com/zsh-users/zsh-completions.git "$ZSH"/plugins/zsh-completions
 #source "${ZSH}/plugins/zsh-completions/zsh-completions.plugin.zsh"
 fpath=($ZSH/plugins/zsh-completions/src $fpath)
+
+## FZF History -----------------------------------------------
+[ ! -d $ZSH/plugins/zsh-fzf-history-search/.git ] && git clone https://github.com/joshskidmore/zsh-fzf-history-search.git "$ZSH"/plugins/zsh-fzf-history-search
+source "${ZSH}/plugins/zsh-fzf-history-search/zsh-fzf-history-search.plugin.zsh"
 
 
 # ---------------------- USER SETTINGS ---------------------- #
 # Environment variables
-EDITOR=nvim
-KUBE_EDITOR=nvim
+export EDITOR=nvim
+export KUBE_EDITOR=nvim
 
 # Kubectl completion
 [[ $commands[kubectl] ]] && source <(kubectl completion zsh)

@@ -755,6 +755,15 @@ require('lazy').setup {
       --    - Treesitter + textobjects: https://github.com/nvim-treesitter/nvim-treesitter-textobjects
     end,
   },
+  {
+    'iamcco/markdown-preview.nvim',
+    cmd = { 'MarkdownPreviewToggle', 'MarkdownPreview', 'MarkdownPreviewStop' },
+    build = 'cd app && yarn install',
+    init = function()
+      vim.g.mkdp_filetypes = { 'markdown' }
+    end,
+    ft = { 'markdown' },
+  },
   { -- A file explorer for Neovim
     'nvim-tree/nvim-tree.lua',
     version = '*',
