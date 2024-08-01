@@ -760,6 +760,15 @@ require('lazy').setup {
     ft = { 'just' },
   },
   { 'IndianBoy42/tree-sitter-just' },
+  {
+    'iamcco/markdown-preview.nvim',
+    cmd = { 'MarkdownPreviewToggle', 'MarkdownPreview', 'MarkdownPreviewStop' },
+    build = 'cd app && yarn install',
+    init = function()
+      vim.g.mkdp_filetypes = { 'markdown' }
+    end,
+    ft = { 'markdown' },
+  },
   { -- A file explorer for Neovim
     'nvim-tree/nvim-tree.lua',
     version = '*',
