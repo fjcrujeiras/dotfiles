@@ -755,6 +755,11 @@ require('lazy').setup {
       --    - Treesitter + textobjects: https://github.com/nvim-treesitter/nvim-treesitter-textobjects
     end,
   },
+  { -- Syntax support for Justfiles
+    'NoahTheDuke/vim-just',
+    ft = { 'just' },
+  },
+  { 'IndianBoy42/tree-sitter-just' },
   { -- A file explorer for Neovim
     'nvim-tree/nvim-tree.lua',
     version = '*',
