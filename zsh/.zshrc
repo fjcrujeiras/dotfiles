@@ -15,6 +15,11 @@ export XDG_DOCUMENTS_DIR="${HOME}/cloud/documents"
 export XDG_MUSIC_DIR="${HOME}/cloud/music"
 export XDG_PICTURES_DIR="${HOME}/cloud/pictures"
 export XDG_VIDEOS_DIR="${HOME}/cloud/videos"
+export XDG_DATA_DIRS="/usr/local/share/:/usr/share/:/var/lib/snapd/desktop:/var/lib/flatpak/exports/share:${HOME}/.local/share/flatpak/exports/share"
+
+## load ZSH module for function profiling
+zmodload zsh/zprof
+
 
 ## ---------------------- Powerlvel10K instant Promt config ---------------#
 # Keep these lines here
@@ -79,15 +84,31 @@ source "${ZSH}/plugins/zsh-autosuggestions/zsh-autosuggestions.plugin.zsh"
 #source "${ZSH}/plugins/zsh-completions/zsh-completions.plugin.zsh"
 fpath=($ZSH/plugins/zsh-completions/src $fpath)
 
+## ZSH History Substring search ------------------------------
+[ ! -d $ZSH/plugins/zsh-history-substring-search/.git ] && git clone https://github.com/zsh-users/zsh-history-substring-search.git "$ZSH"/plugins/zsh-history-substring-search
+source "${ZSH}/plugins/zsh-history-substring-search/zsh-history-substring-search.plugin.zsh"
+bindkey '^[[A' history-substring-search-up
+bindkey '^[[B' history-substring-search-down
+
 ## FZF History -----------------------------------------------
 [ ! -d $ZSH/plugins/zsh-fzf-history-search/.git ] && git clone https://github.com/joshskidmore/zsh-fzf-history-search.git "$ZSH"/plugins/zsh-fzf-history-search
 source "${ZSH}/plugins/zsh-fzf-history-search/zsh-fzf-history-search.plugin.zsh"
 
 
 # ---------------------- USER SETTINGS ---------------------- #
+# FZF
+source <(fzf --zsh)
+export FZF_DEFAULT_COMMAND='fd --hidden --color=always --strip-cwd-prefix --exclude .git'
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+export FZF_ALT_C_COMMAND='fd --type=d --hidden --color=always --strip-cwd-prefix --exclude .git'
+export FZF_DEFAULT_OPTS="--ansi"
+
 # Environment variables
 export EDITOR=nvim
 export KUBE_EDITOR=nvim
+export GPG_TTY=$TTY
+gpgconf --launch gpg-agent
+# export GPG_TTY=$(tty) # Needed for singing commits
 
 # Kubectl completion
 [[ $commands[kubectl] ]] && source <(kubectl completion zsh)
@@ -122,10 +143,18 @@ alias kubens=kubectl-ns
 # Direnv
 eval "$(direnv hook zsh)"
 
+# Zoxide
+if ! type "zoxide" > /dev/null ; then
+  curl -sSfL https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | sh
+fi
+eval "$(zoxide init --cmd cd zsh)"
+
 # ---------------------- ALIASES ---------------------- #
 alias l="ll"
 alias ll="eza -l --icons --git -a"
 alias lt="eza --tree --level=2 --long --icons --git"
+alias gen-toc='docker run -v $(pwd)":/app" -w /app --rm -it sebdah/markdown-toc'
+alias dockc='docker ps -a | grep -v "IMAGE" | fzf --preview "docker inspect {1} | bat --color=always --language=json"'
 
 # ---------------------- CUSTOM FUNCTIONS ------------- #
 # cd into dir and list
