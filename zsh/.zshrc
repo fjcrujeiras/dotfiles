@@ -122,6 +122,10 @@ export GOPATH=${HOME}/.go
 
 export PATH=$GOROOT/bin:$GOPATH/bin:$PATH
 
+# ZIG PATH
+
+export PATH=${HOME}/zig:$PATH
+
 # Gcloud completion
 source $HOME/.local/google-cloud-sdk/completion.zsh.inc
 
@@ -151,8 +155,8 @@ eval "$(zoxide init --cmd cd zsh)"
 
 # ---------------------- ALIASES ---------------------- #
 alias l="ll"
-alias ll="eza -l --icons --git -a"
-alias lt="eza --tree --level=2 --long --icons --git"
+alias ll="eza -l --icons --git -a --hyperlink"
+alias lt="eza --tree --level=2 --long --icons --git --hyperlink"
 alias gen-toc='docker run -v $(pwd)":/app" -w /app --rm -it sebdah/markdown-toc'
 alias dockc='docker ps -a | grep -v "IMAGE" | fzf --preview "docker inspect {1} | bat --color=always --language=json"'
 
@@ -189,3 +193,12 @@ function encStr() {
 function getPodcastFeed() {
   curl -s "https://itunes.apple.com/lookup?media=podcast&id=$1" | jq '.results|.[]|.feedUrl' | tr '"' ' '
 }
+
+export PATH=$PATH:/home/fjcrujeiras/.spicetify
+
+# bun completions
+[ -s "/home/fjcrujeiras/.bun/_bun" ] && source "/home/fjcrujeiras/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
