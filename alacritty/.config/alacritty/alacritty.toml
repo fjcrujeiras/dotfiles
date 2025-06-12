@@ -1,4 +1,4 @@
-import = ["~/.config/alacritty/catppuccin/catppuccin-mocha.toml", "~/.config/alacritty/extraConfig/logging.toml"]
+general.import = ["~/.config/alacritty/catppuccin/catppuccin-mocha.toml", "~/.config/alacritty/extraConfig/logging.toml"]
 
 [env]
 TERM = "xterm-256color"
@@ -106,3 +106,6 @@ mods = "Shift"
 [window]
 decorations = "full"
 startup_mode = "Maximized"
+
+[selection]
+save_to_clipboard = true
