@@ -718,11 +718,18 @@ require('lazy').setup {
     end,
   },
 
-  --  { -- Syntax support for Justfiles
-  --    'NoahTheDuke/vim-just',
-  --    ft = { 'just' },
-  --  },
-  --  { 'IndianBoy42/tree-sitter-just' },
+  { -- Toggle terminal with multiple layout support (floating included)
+    -- https://github.com/akinsho/toggleterm.nvim
+    'akinsho/toggleterm.nvim',
+    version = '*',
+    config = function()
+      require('toggleterm').setup {
+        direction = 'float', -- Floating terminal by default
+        open_mapping = [[<c-\>]], -- Control + \
+        -- autochdir = true,
+      }
+    end,
+  },
 
   { -- Integrate preview for Markdown files
     'iamcco/markdown-preview.nvim',
