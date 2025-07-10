@@ -86,6 +86,15 @@ zinit snippet OMZ::plugins/kubectl/kubectl.plugin.zsh
 # Git aliases from Oh My Zsh
 zinit snippet OMZ::plugins/git/git.plugin.zsh
 
+# --- Tooling Integrations (lazy-loaded for performance) ---
+# ASDF: Replaces `. $HOME/.asdf/asdf.sh`
+zinit ice lucid wait'1'
+zinit light asdf-vm/asdf
+
+# Direnv: Replaces `eval "$(direnv hook zsh)"`
+zinit ice lucid wait'2' atload'eval "$(direnv hook zsh)"'
+zinit snippet /dev/null
+
 # ---------------------- USER SETTINGS ---------------------- #
 # FZF
 export FZF_DEFAULT_COMMAND='fd --hidden --color=always --strip-cwd-prefix --exclude .git'
@@ -105,11 +114,10 @@ export GOROOT=/opt/go
 export GOPATH=${HOME}/.go
 
 # Gcloud completion
-source $HOME/.local/google-cloud-sdk/completion.zsh.inc
+# source $HOME/.local/google-cloud-sdk/completion.zsh.inc # Handled by zinit
 
 # ASDF
-. $HOME/.asdf/asdf.sh
-#. $HOME/.asdf/completions/asdf.bash
+# . $HOME/.asdf/asdf.sh # Handled by zinit
 export USE_GKE_GCLOUD_AUTH_PLUGIN=True
 
 # Krew uses KREW_ROOT, so we export it. Its path is handled below.
@@ -121,20 +129,21 @@ export BUN_INSTALL="$HOME/.bun"
 # Centralized PATH management
 # `typeset -U path` creates a unique array, preventing duplicate entries.
 typeset -U path
-path=(
+local -a p
+p=(
     # User binaries take precedence
-    "$BUN_INSTALL/bin"
-    "$KREW_ROOT/bin"
-    "$HOME/.kubectx"
-    "$HOME/.local/bin"
-    "$HOME/zig"
-    "$GOPATH/bin"
-    "$GOROOT/bin"
-    # Original system path
-    $path
-    # Appended paths
-    "$HOME/.spicetify"
+    "$BUN_INSTALL/bin"      # Bun
+    "$KREW_ROOT/bin"        # Krew
+    "$HOME/.kubectx"        # kubectx/kubens
+    "$HOME/.local/bin"      # User local binaries
+    "$HOME/zig"             # Zig
+    "$GOPATH/bin"           # Go binaries
+    "$GOROOT/bin"           # Go root
+    "$HOME/.spicetify"      # Spicetify
 )
+# Prepend only existing directories to the path to keep it clean and portable
+path=(${(@f)p:A} $path)
+unset p
 
 # Kubectl Aliases
 # The 'k' alias and its completion are handled by the OMZ kubectl plugin loaded via zinit above.
@@ -142,17 +151,14 @@ alias kubectx=kubectl-ctx
 alias kubens=kubectl-ns
 
 # Direnv
-eval "$(direnv hook zsh)"
-
-# Zoxide
-eval "$(zoxide init zsh)"
+# The zinit plugins for direnv and zoxide handle their initialization.
 
 # ---------------------- ALIASES ---------------------- #
 alias l="ll"
 alias ll="eza -l --icons --git -a --hyperlink"
 alias lt="eza --tree --level=2 --long --icons --git --hyperlink"
 alias gen-toc='docker run -v $(pwd)":/app" -w /app --rm -it sebdah/markdown-toc'
-alias dockc='docker ps -a | grep -v "IMAGE" | fzf --preview "docker inspect {1} | bat --color=always --language=json"'
+alias dockc='docker ps -a | grep -v "IMAGE" | fzf --header "Select a container to inspect" --preview "docker inspect {1} | bat --color=always --language=json"'
 
 # ---------------------- CUSTOM FUNCTIONS ------------- #
 # cd into dir and list
@@ -169,6 +175,14 @@ fi
 # kds = kubernetes decode secret
 function kds() {
   local secret
+  # Check for dependencies before executing
+  for cmd in kubectl fzf yq; do
+    if ! command -v "$cmd" >/dev/null 2>&1; then
+      print -u2 "kds: command not found: $cmd"
+      return 1
+    fi
+  done
+
   # list all secret names in current namespace and select 1 using fzf
   secret=$(kubectl get secrets -o name | fzf)
   [[ -z "$secret" ]] && return 1 # Exit if no secret was selected
@@ -200,4 +214,12 @@ function getPodcastFeed() {
 }
 
 # bun completions
-[ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
+# [ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun" # Handled by zinit
+
+# --- Lazy-loaded completions ---
+# These are sourced after a 3-second delay to not block the prompt.
+# The `(N)` glob qualifier prevents errors if the file doesn't exist yet.
+zinit ice lucid wait'3'
+zinit snippet $HOME/.bun/_bun(N)
+zinit ice lucid wait'3'
+zinit snippet $HOME/.local/google-cloud-sdk/completion.zsh.inc(N)
