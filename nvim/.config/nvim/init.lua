@@ -801,6 +801,16 @@ require('lazy').setup {
   },
 
   'fladson/vim-kitty',
+  -- Table of contents generator for Markdown files
+  {
+    'mzlogin/vim-markdown-toc',
+    init = function()
+      vim.g.vmt_fence_text = 'TOC' -- Inner text of the fence marker
+      vim.g.vmt_fence_closing_text = '/TOC' -- Inner text of the closing fence marker
+      vim.g.vmt_include_headings_before = 0 -- If set to 0, exclude headings before the TOC
+      vim.g.vmt_auto_update_on_save = 1 -- Automatically updates the TOC on save
+    end,
+  },
   -- lazygit integration on floating terminal
   {
     'kdheepak/lazygit.nvim',
