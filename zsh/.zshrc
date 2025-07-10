@@ -46,58 +46,48 @@ compinit
 
 
 ## ---------------------- Zinit ------------------------------#
-ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
-[ ! -d $ZINIT_HOME ] && mkdir -p "$(dirname $ZINIT_HOME)"
-[ ! -d $ZINIT_HOME/.git ] && git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
+ZINIT_HOME="${XDG_DATA_HOME:-$HOME/.local/share}/zinit/zinit.git"
+if [[ ! -d "$ZINIT_HOME/.git" ]]; then
+    mkdir -p "$(dirname "$ZINIT_HOME")"
+    git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
+fi
 source "${ZINIT_HOME}/zinit.zsh"
 # As we are installing zinit after initializing compinit
 autoload -Uz _zinit
 (( ${+_comps} )) && _comps[zinit]=_zinit
 
 
-## --------------------- CUSTOM PLUGINS ----------------------#
-ZSH="${HOME}/.zsh"
-[ ! -d $ZSH ] && mkdir -p "$(dirname $ZSH)"
-[ ! -d ${ZSH}/plugins ] && mkdir -p "$(dirname $ZSH/plugins)"
-[ ! -d ${ZSH}/themes ] && mkdir -p "$(dirname $ZSH/themes)"
+### Zinit plugins ###
+# By using zinit, we avoid running git/curl/mkdir on every shell startup.
+# zinit handles installation and updates cleanly.
 
-## Powerlevel10K ---------------------------------------------
-[ ! -d $ZSH/themes/powerlevel10k/.git ] && git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "$ZSH"/themes/powerlevel10k
-source "${ZSH}/themes/powerlevel10k/powerlevel10k.zsh-theme"
+# Theme (must be loaded before the p10k config file)
+zinit light romkatv/powerlevel10k
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
-## OMZ Git Plugin --------------------------------------------
-[ ! -d $ZSH/plugins/git ] && mkdir $ZSH/plugins/git && curl https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/plugins/git/git.plugin.zsh -o $ZSH/plugins/git/git.plugin.zsh
-source "${ZSH}/plugins/git/git.plugin.zsh"
-
-## Fast Syntax Highligthing ----------------------------------
-[ ! -d $ZSH/plugins/fast-syntax-highlighting/.git ] && git clone https://github.com/zdharma-zmirror/fast-syntax-highlighting.git "$ZSH"/plugins/fast-syntax-highlighting
-source "${ZSH}/plugins/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh"
-
-## ZSH Auto Suggestions --------------------------------------
-[ ! -d $ZSH/plugins/zsh-autosuggestions/.git ] && git clone https://github.com/zsh-users/zsh-autosuggestions.git "$ZSH"/plugins/zsh-autosuggestions
-source "${ZSH}/plugins/zsh-autosuggestions/zsh-autosuggestions.plugin.zsh"
-
-## ZSH Completions -------------------------------------------
-[ ! -d $ZSH/plugins/zsh-completions/.git ] && git clone https://github.com/zsh-users/zsh-completions.git "$ZSH"/plugins/zsh-completions
-#source "${ZSH}/plugins/zsh-completions/zsh-completions.plugin.zsh"
-fpath=($ZSH/plugins/zsh-completions/src $fpath)
-
-## ZSH History Substring search ------------------------------
-[ ! -d $ZSH/plugins/zsh-history-substring-search/.git ] && git clone https://github.com/zsh-users/zsh-history-substring-search.git "$ZSH"/plugins/zsh-history-substring-search
-source "${ZSH}/plugins/zsh-history-substring-search/zsh-history-substring-search.plugin.zsh"
+# Core Functionality
+zinit light zdharma-zmirror/fast-syntax-highlighting
+zinit light zsh-users/zsh-autosuggestions
+zinit light zsh-users/zsh-history-substring-search
 bindkey '^[[A' history-substring-search-up
 bindkey '^[[B' history-substring-search-down
 
-## FZF History -----------------------------------------------
-[ ! -d $ZSH/plugins/zsh-fzf-history-search/.git ] && git clone https://github.com/joshskidmore/zsh-fzf-history-search.git "$ZSH"/plugins/zsh-fzf-history-search
-source "${ZSH}/plugins/zsh-fzf-history-search/zsh-fzf-history-search.plugin.zsh"
+# Tools & Integrations
+zinit light junegunn/fzf # Manages fzf's keybindings and completions
+zinit light joshskidmore/zsh-fzf-history-search
+zinit light ajeetdsouza/zoxide # Manages zoxide, replaces manual install and eval
 
+# Completions
+zinit light zsh-users/zsh-completions # Adds many more completions
+zinit ice lucid wait'0' blockf
+zinit snippet OMZ::plugins/kubectl/kubectl.plugin.zsh
+
+# Git aliases from Oh My Zsh
+zinit snippet OMZ::plugins/git/git.plugin.zsh
 
 # ---------------------- USER SETTINGS ---------------------- #
 # FZF
-source <(fzf --zsh)
 export FZF_DEFAULT_COMMAND='fd --hidden --color=always --strip-cwd-prefix --exclude .git'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 export FZF_ALT_C_COMMAND='fd --type=d --hidden --color=always --strip-cwd-prefix --exclude .git'
@@ -107,24 +97,12 @@ export FZF_DEFAULT_OPTS="--ansi"
 export EDITOR=nvim
 export KUBE_EDITOR=nvim
 export GPG_TTY=$TTY
-gpgconf --launch gpg-agent
-# export GPG_TTY=$(tty) # Needed for singing commits
-
-# Kubectl completion
-[[ $commands[kubectl] ]] && source <(kubectl completion zsh)
-alias k="kubectl"
-compdef __start_kubectl k
+# Launch gpg-agent if not running. `gpgconf` is idempotent.
+gpgconf --launch gpg-agent >/dev/null 2>&1
 
 # GOROOT/GOPATH
-
 export GOROOT=/opt/go
 export GOPATH=${HOME}/.go
-
-export PATH=$GOROOT/bin:$GOPATH/bin:$PATH
-
-# ZIG PATH
-
-export PATH=${HOME}/zig:$PATH
 
 # Gcloud completion
 source $HOME/.local/google-cloud-sdk/completion.zsh.inc
@@ -132,26 +110,42 @@ source $HOME/.local/google-cloud-sdk/completion.zsh.inc
 # ASDF
 . $HOME/.asdf/asdf.sh
 #. $HOME/.asdf/completions/asdf.bash
-
-# kubectx and kubens
-export PATH=$HOME/.kubectx:$HOME/.local/bin:$PATH:
-
 export USE_GKE_GCLOUD_AUTH_PLUGIN=True
 
-# Krew
-export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
+# Krew uses KREW_ROOT, so we export it. Its path is handled below.
+export KREW_ROOT="${XDG_DATA_HOME:-$HOME/.local/share}/krew"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+
+# Centralized PATH management
+# `typeset -U path` creates a unique array, preventing duplicate entries.
+typeset -U path
+path=(
+    # User binaries take precedence
+    "$BUN_INSTALL/bin"
+    "$KREW_ROOT/bin"
+    "$HOME/.kubectx"
+    "$HOME/.local/bin"
+    "$HOME/zig"
+    "$GOPATH/bin"
+    "$GOROOT/bin"
+    # Original system path
+    $path
+    # Appended paths
+    "$HOME/.spicetify"
+)
+
+# Kubectl Aliases
+# The 'k' alias and its completion are handled by the OMZ kubectl plugin loaded via zinit above.
 alias kubectx=kubectl-ctx
 alias kubens=kubectl-ns
-
 
 # Direnv
 eval "$(direnv hook zsh)"
 
 # Zoxide
-if ! type "zoxide" > /dev/null ; then
-  curl -sSfL https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | sh
-fi
-eval "$(zoxide init --cmd cd zsh)"
+eval "$(zoxide init zsh)"
 
 # ---------------------- ALIASES ---------------------- #
 alias l="ll"
@@ -164,24 +158,35 @@ alias dockc='docker ps -a | grep -v "IMAGE" | fzf --preview "docker inspect {1} 
 # cd into dir and list
 cx() { cd "$@" && l; }
 
-autoload -U +X bashcompinit && bashcompinit
-complete -o nospace -C $HOME/.local/bin/terragrunt terragrunt
-
+# Terragrunt bash completion
+autoload -U bashcompinit && bashcompinit
+if (( $+commands[terragrunt] )); then
+  complete -o nospace -C "$(command -v terragrunt)" terragrunt
+fi
 
 # Thanks to Raynix
 # source: https://raynix.info/archives/4592
 # kds = kubernetes decode secret
 function kds() {
+  local secret
   # list all secret names in current namespace and select 1 using fzf
-  secret=$(kubectl get secrets -o name| fzf)
-  secret_cache=/tmp/kds_cache
+  secret=$(kubectl get secrets -o name | fzf)
+  [[ -z "$secret" ]] && return 1 # Exit if no secret was selected
+
+  local secret_cache
+  secret_cache=$(mktemp)
+  # Ensure the temp file is removed when the function returns
+  trap "rm -f $secret_cache" RETURN
+
   # cache the selected secret's content
-  kubectl get $secret -o yaml > $secret_cache
+  kubectl get "$secret" -o yaml > "$secret_cache"
   # list all keys in the secret and select 1 using fzf
-  secret_key=$(cat $secret_cache | yq '.data|keys' |sed 's|^- ||g'|fzf)
+  local secret_key
+  secret_key=$(yq '.data | keys | .[]' "$secret_cache" | fzf)
   # print out the selected key and decode its value
-  cat $secret_cache |yq ".data.\"$secret_key\"" |base64 -d
-  rm $secret_cache
+  if [[ -n "$secret_key" ]]; then
+    yq ".data.\"$secret_key\"" "$secret_cache" | base64 -d
+  fi
 }
 
 function encStr() {
@@ -194,11 +199,5 @@ function getPodcastFeed() {
   curl -s "https://itunes.apple.com/lookup?media=podcast&id=$1" | jq '.results|.[]|.feedUrl' | tr '"' ' '
 }
 
-export PATH=$PATH:/home/fjcrujeiras/.spicetify
-
 # bun completions
-[ -s "/home/fjcrujeiras/.bun/_bun" ] && source "/home/fjcrujeiras/.bun/_bun"
-
-# bun
-export BUN_INSTALL="$HOME/.bun"
-export PATH="$BUN_INSTALL/bin:$PATH"
+[ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
