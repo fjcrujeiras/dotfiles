@@ -16,6 +16,7 @@ export XDG_MUSIC_DIR="${HOME}/cloud/music"
 export XDG_PICTURES_DIR="${HOME}/cloud/pictures"
 export XDG_VIDEOS_DIR="${HOME}/cloud/videos"
 export XDG_DATA_DIRS="/usr/local/share/:/usr/share/:/var/lib/snapd/desktop:/var/lib/flatpak/exports/share:${HOME}/.local/share/flatpak/exports/share"
+export SSH_AUTH_SOCK="${HOME}/.bitwarden-ssh-agent.sock"
 
 ## load ZSH module for function profiling
 zmodload zsh/zprof
