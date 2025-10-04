@@ -832,4 +832,8 @@ require('lazy').setup {
       { '<leader>lg', '<cmd>LazyGit<cr>', desc = 'LazyGit' },
     },
   },
+  -- {
+  --   'kiddos/gemini.nvim',
+  --   opts = {},
+  -- },
 }
