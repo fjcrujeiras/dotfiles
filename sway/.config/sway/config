@@ -2,7 +2,15 @@
 ## @fjcrujeiras
 ## This config file takes the default as a base
 
-exec dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway
+
+# Start clipboard history tracking
+
+# Set a keybinding to access clipboard history
+# set $clipboard cliphist list | dmenu -p "Select item to copy" -l 10 -r | cliphist decode | wl-copy
+
+# Optional: Use a script to paste immediately after selection
+# Install wtype and use: 
+# set $clipboard cliphist list | rofi -dmenu -p "Select item to copy" -lines 10 -width 35 | cliphist decode | wl-copy && wtype -M ctrl v
 
 # -------------------------------------------------------------------------------------
 ### Variables
@@ -24,7 +32,7 @@ exec dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DE
 ### Output configuration
 #
 # Default wallpaper (more resolutions are available in @datadir@/backgrounds/sway/)
-# output * bg @datadir@/backgrounds/sway/Sway_Wallpaper_Blue_1920x1080.png fill
+output * bg ~/cloud/pictures/wallpapers/blackhole.jpg fill
 #
 # Example configuration:
 #
@@ -34,10 +42,14 @@ exec dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DE
 
 
 # -------------------------------------------------------------------------------------
-### Idle configuration
-#
-# Example configuration:
-#
+### Service configuration
+
+exec dbus-update-activation-environment \
+    --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway
+
+# Enable Cliphist
+exec wl-paste --watch cliphist store
+ 
 exec swayidle -w \
          timeout 300 'swaylock -f -c 000000' \
          timeout 600 'swaymsg "output * power off"' resume 'swaymsg "output * power on"' \
@@ -136,11 +148,11 @@ exec swayidle -w \
 # Workspaces:
 #
     # Switch to workspace
-    bindsym $mod+q workspace number 1
-    bindsym $mod+w workspace number 2
-    bindsym $mod+e workspace number 3
-    bindsym $mod+r workspace number 4
-    bindsym $mod+t workspace number 5
+    bindsym $mod+1 workspace number 1
+    bindsym $mod+2 workspace number 2
+    bindsym $mod+3 workspace number 3
+    bindsym $mod+4 workspace number 4
+    bindsym $mod+5 workspace number 5
     bindsym $mod+6 workspace number 6
     bindsym $mod+7 workspace number 7
     bindsym $mod+8 workspace number 8
@@ -240,8 +252,8 @@ bindsym $mod+Alt+r mode "resize"
 
     bindsym --locked XF86MonBrightnessUp exec brightnessctl set 5%+
     # Special key to take a screenshot with grim
-    bindsym Print exec grim
-
+    bindsym Print exec flameshot screen -p ~/Pictures/Screenshots/
+    bindsym Shift+Print exec flameshot gui -p ~/Pictures/Screenshots/
 #
 # -------------------------------------------------------------------------------------
 # Status Bar:
