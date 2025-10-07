@@ -155,8 +155,10 @@ alias kubens=kubectl-ns
 
 # ---------------------- ALIASES ---------------------- #
 alias l="ll"
-alias ll="eza -l --icons --git -a --hyperlink"
-alias lt="eza --tree --level=2 --long --icons --git --hyperlink"
+alias ls="ls -h --color=auto"
+alias ll="ls -o -A --color=auto -h -p --group-directories-first"
+alias la="ls -l -a --color=always -h -p --group-directories-first"
+alias lr="ll -R"
 alias gen-toc='docker run -v $(pwd)":/app" -w /app --rm -it sebdah/markdown-toc'
 alias dockc='docker ps -a | grep -v "IMAGE" | fzf --header "Select a container to inspect" --preview "docker inspect {1} | bat --color=always --language=json"'
 
