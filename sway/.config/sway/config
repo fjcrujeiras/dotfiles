@@ -26,7 +26,8 @@
     set $term alacritty
     # Your preferred application launcher
     # set $menu dmenu_run
-    set $menu exec ~/.config/dmenu_scripts/dmenu_run
+    #set $menu exec ~/.config/dmenu_scripts/dmenu_run
+    set $menu exec ulauncher
 
 # -------------------------------------------------------------------------------------
 ### Output configuration

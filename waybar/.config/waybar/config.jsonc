@@ -7,15 +7,18 @@
     "spacing": 4, // Gaps between modules (4px)
     // Choose the order of the modules
     "modules-left": [
-        "sway/workspaces",
-        "sway/mode",
+        "cpu",
+        "memory",
+        "temperature",
         "sway/scratchpad",
+        "mpris",
         "custom/media"
     ],
     "fixed-center": true,
     "modules-center": [
-        "mpris",
-        "sway/window"
+        "sway/workspaces",
+        "sway/mode"
+        // "sway/window"
     ],
     "modules-right": [
         // "mpd",
@@ -25,9 +28,6 @@
         "bluetooth",
         "sway/language",
         "power-profiles-daemon",
-        "cpu",
-        "memory",
-        "temperature",
         "backlight",
         "battery",
         "clock",
@@ -55,8 +55,8 @@
     "sway/workspaces": {
         "disable-scroll": false,
         "all-outputs": true,
-        "warp-on-scroll": false,
-        "format": "{name}: {icon}",
+        "warp-on-scroll": true,
+        "format": "{name}: {icon} ",
         "format-icons": {
             "1": "",
             "2": "",
