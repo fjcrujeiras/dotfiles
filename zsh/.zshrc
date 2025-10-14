@@ -21,8 +21,8 @@ export XDG_DATA_DIRS="/usr/local/share/:/usr/share/:/var/lib/snapd/desktop:/var/
 zmodload zsh/zprof
 
 
-## ---------------------- Powerlvel10K instant Promt config ---------------#
-# Keep these lines here
+# ## ---------------------- Powerlvel10K instant Promt config ---------------#
+# # Keep these lines here
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
@@ -76,7 +76,6 @@ bindkey '^[[B' history-substring-search-down
 # Tools & Integrations
 zinit light junegunn/fzf # Manages fzf's keybindings and completions
 zinit light joshskidmore/zsh-fzf-history-search
-zinit light ajeetdsouza/zoxide # Manages zoxide, replaces manual install and eval
 
 # Completions
 zinit light zsh-users/zsh-completions # Adds many more completions
