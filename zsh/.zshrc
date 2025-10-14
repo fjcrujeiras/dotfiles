@@ -7,7 +7,7 @@
 export XDG_CONFIG_HOME="${HOME}/.config"
 export XDG_CACHE_HOME="${HOME}/.cache"
 export XDG_DATA_HOME="${HOME}/.local/share"
-export XDG_DOWNLOAD_DIR="${HOME}/cloud/downloads"
+export XDG_DOWNLOAD_DIR="${HOME}/Downloads"
 export XDG_DESKTOP_DIR="${HOME}/desktop"
 export XDG_TEMPLATES_DIR="${HOME}/"
 export XDG_PUBLICSHARE_DIR="${HOME}/shared/public"
@@ -121,7 +121,7 @@ export GOPATH=${HOME}/.go
 export USE_GKE_GCLOUD_AUTH_PLUGIN=True
 
 # Krew uses KREW_ROOT, so we export it. Its path is handled below.
-export KREW_ROOT="${XDG_DATA_HOME:-$HOME/.local/share}/krew"
+export KREW_ROOT="$HOME/.krew"
 
 # bun
 export BUN_INSTALL="$HOME/.bun"
@@ -134,7 +134,6 @@ p=(
     # User binaries take precedence
     "$BUN_INSTALL/bin"      # Bun
     "$KREW_ROOT/bin"        # Krew
-    "$HOME/.kubectx"        # kubectx/kubens
     "$HOME/.local/bin"      # User local binaries
     "$HOME/zig"             # Zig
     "$GOPATH/bin"           # Go binaries
