@@ -113,10 +113,6 @@ export GOROOT=/opt/go
 export GOPATH=${HOME}/.go
 
 # Gcloud completion
-# source $HOME/.local/google-cloud-sdk/completion.zsh.inc # Handled by zinit
-
-# ASDF
-# . $HOME/.asdf/asdf.sh # Handled by zinit
 export USE_GKE_GCLOUD_AUTH_PLUGIN=True
 
 # Krew uses KREW_ROOT, so we export it. Its path is handled below.
