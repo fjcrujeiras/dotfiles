@@ -1,0 +1,5 @@
+[tools]
+node = '18'
+"npm:markdown-toc" = '1.2.0'
+[tasks]
+toc = "markdown-toc -i README.md"
