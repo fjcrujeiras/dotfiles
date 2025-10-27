@@ -1,0 +1,14 @@
+base-devel
+gnu-netcat
+jq
+less
+make
+neofetch
+nfs-utils
+ripgrep
+ripgrep-all
+rsync
+stow
+tailscale
+tmux
+tree
