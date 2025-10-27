@@ -23,6 +23,7 @@ sudo dnf install stow
 ```bash
 sudo apt install -y light sway swaybg swayidle swayimg swaylock waybar wofi fonts-font-awesome clipman
 ```
+
 ### Permissions for the **light** command
 
 In order to use the light command without sudo, the current user must be part of the *video* group
