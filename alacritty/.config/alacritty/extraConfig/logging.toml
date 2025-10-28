@@ -1,4 +1,0 @@
-[debug]
-log_level = "Debug"
-persistent_logging = true
-print_events = false
