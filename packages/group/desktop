@@ -1,6 +1,11 @@
 bitwarden
+claude-code
 ghostty
+helm
+k9s
 kubectl
 kubectx
 kubens
+minikube
+picard
 zen-browser-bin

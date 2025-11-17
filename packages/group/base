@@ -1,4 +1,6 @@
+ansible
 base-devel
+bind
 gnu-netcat
 jq
 less
