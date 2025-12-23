@@ -1,3 +1,5 @@
+act-runner-bin
+banana-cursor-bin
 bitwarden
 claude-code
 ghostty
@@ -7,5 +9,8 @@ kubectl
 kubectx
 kubens
 minikube
+pass
+pass-otp
 picard
+sops
 zen-browser-bin

@@ -12,6 +12,7 @@ source ~/.local/share/omarchy/default/bash/rc
 
 # ls stuff
 alias ll='ls -liah'
+alias l='ll'
 
 # kubectl nice-to-have
 source <(kubectl completion bash)
