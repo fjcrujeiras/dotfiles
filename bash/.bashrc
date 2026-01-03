@@ -10,6 +10,10 @@ source ~/.local/share/omarchy/default/bash/rc
 # Make an alias for invoking commands you use constantly
 # alias p='python'
 
+
+# ssh-agent configuration
+export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
+
 # ls stuff
 alias ll='ls -liah'
 alias l='ll'
