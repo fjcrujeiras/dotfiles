@@ -1,6 +1,7 @@
 ansible
 base-devel
 bind
+cmatrix
 gnu-netcat
 jq
 less

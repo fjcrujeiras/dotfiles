@@ -1,9 +1,10 @@
+azure-cli
 forticlient-vpn
 gemini-cli
 google-cloud-cli
 google-cloud-cli-bq
 google-cloud-cli-component-gke-gcloud-auth-plugin
-moongodb-bin
+mongodb-bin
 mongodb-compass-bin
 openvpn
 powershell-bin
