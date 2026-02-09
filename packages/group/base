@@ -1,4 +1,3 @@
-ansible
 base-devel
 bind
 cmatrix
@@ -13,6 +12,5 @@ ripgrep
 ripgrep-all
 rsync
 stow
-tailscale
 tmux
 tree

@@ -1,0 +1,13 @@
+act-runner-bin
+ansible
+claude-code
+helm
+jsonnet-bundler
+k9s
+krew
+kubectl
+kubectx
+kubens
+minikube
+sops
+tanka
