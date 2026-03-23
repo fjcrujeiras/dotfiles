@@ -1,6 +1,8 @@
 act-runner-bin
 ansible
 claude-code
+diffnav
+glow
 helm
 jsonnet-bundler
 k9s
@@ -10,4 +12,6 @@ kubectx
 kubens
 minikube
 sops
+systemd-resolvconf
 tanka
+wireguard-tools

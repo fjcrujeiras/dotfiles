@@ -3,6 +3,9 @@ banana-cursor-bin
 bitwarden
 calibre
 ghostty
+hledger
+hledger-ui
+hledger-web
 pass
 pass-otp
 picard
