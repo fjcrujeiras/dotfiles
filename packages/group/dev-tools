@@ -14,4 +14,6 @@ minikube
 sops
 systemd-resolvconf
 tanka
+terraform
+terraform-docs
 wireguard-tools

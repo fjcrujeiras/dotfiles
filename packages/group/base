@@ -2,6 +2,7 @@ base-devel
 bind
 cmatrix
 gnu-netcat
+grc
 jq
 less
 make
