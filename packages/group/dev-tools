@@ -15,5 +15,5 @@ sops
 systemd-resolvconf
 tanka
 terraform
-terraform-docs
+terraform-docs-bin
 wireguard-tools
