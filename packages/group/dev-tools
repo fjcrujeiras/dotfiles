@@ -1,8 +1,8 @@
 act-runner-bin
 ansible
 antigravity-cli
-claude-code
 diffnav
+docker
 glow
 helm
 jsonnet-bundler
